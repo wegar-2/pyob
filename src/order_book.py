@@ -1,16 +1,29 @@
-from collections import defaultdict, deque
-import heapq
-
+from book_side import BookSide
+from side import Side
+from trade import Trade
 from order import Order
 
 
 class OrderBook:
 
     def __init__(self):
+        self.bids = BookSide(Side.BUY)
+        self.asks = BookSide(Side.SELL)
 
-        # self.bids, self.asks --- both map price to dicts
-        self.bids: defaultdict[float, deque[Order]] = defaultdict(deque)
-        self.asks: defaultdict[float, deque[Order]] = defaultdict(deque)
+    def match(self, order: Order) -> list[Trade]:
 
-        self.orders: dict[int, Order] = {}
+        if order.side == Side.BUY:
+            own_side = self.bids
+            opposite_side = self.asks
+        else:
+            own_side = self.asks
+            opposite_side = self.bids
 
+        trades: list[Trade] = []
+
+        # matching logic
+
+        if order.quantity > 0:
+            own_side.add_order(order)
+
+        return trades
