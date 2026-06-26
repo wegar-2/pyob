@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from side import Side
+
+from src.side import Side
 
 __all__ = ["Order"]
 

@@ -1,8 +1,9 @@
-from book_side import BookSide
-from side import Side
-from trade import Trade
-from order import Order
+from src.book_side import BookSide
+from src.side import Side
+from src.trade import Trade
+from src.order import Order
 
+__all__ = ["OrderBook"]
 
 
 class OrderBook:
@@ -26,7 +27,7 @@ class OrderBook:
             return True
         return False
 
-    def match(self, order: Order) -> list[Trade]:
+    def submit(self, order: Order) -> list[Trade]:
 
         if order.side == Side.BUY:
             own_side = self.bids
@@ -61,6 +62,8 @@ class OrderBook:
 
             order.quantity -= trade.quantity
             best_order.quantity -= trade.quantity
+
+            opposite_side.clear_empty_orders_at_best_price()
 
         if order.quantity > 0:
             own_side.add_order(order)

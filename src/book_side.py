@@ -1,8 +1,8 @@
 from bisect import insort
 from collections import deque
 
-from side import Side
-from order import Order
+from src.side import Side
+from src.order import Order
 
 
 __all__ = ["BookSide"]
@@ -39,10 +39,9 @@ class BookSide:
         if best_price is None:
             return None
         else:
-
             dq = self.levels[best_price]
 
-            while dq[0].quantity > 0 and len(dq) > 0:
+            while dq[0].quantity == 0 and dq:
                 dq.popleft()
 
             return dq[0]
@@ -56,9 +55,13 @@ class BookSide:
 
         dq = self.levels[best_price]
 
-        while dq[0].quantity == 0 and len(dq) > 0:
+        while dq[0].quantity == 0 and dq:
             popped = dq.popleft()
             self.orders.pop(popped.order_id, None)
+
+        if not dq:
+            self.prices.remove(best_price)
+            del self.levels[best_price]
 
     def cancel(self, order_id: int) -> bool:
 
