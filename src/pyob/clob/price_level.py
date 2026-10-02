@@ -6,16 +6,21 @@ from pyob.common.side import Side
 
 class PriceLevel:
 
-    def __init__(self, side: side, price: int, ):
+    def __init__(self, side: side, price: int):
         self.side = side
         self.price = price
         self._orders: OrderedDict[int, LimitOrder] = OrderedDict()
 
     def add(self, order: LimitOrder):
-        if (os := order.side) != (pls := self.side):
+        if (os := order.side) != self.side:
             raise ValueError(
                 f"Order's side {os} is inconsistent with this level's "
-                f"side {pls}")
+                f"side {self.side}")
+
+        if (op := order.price) != self.price:
+            raise ValueError(
+                f"Inconcistent prices: order's is {op}, "
+                f"level's is {self.price}")
 
         if (oid := order.order_id) in self._orders:
             raise ValueError(f"Order with ID {oid} is already present "
