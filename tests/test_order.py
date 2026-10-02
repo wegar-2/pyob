@@ -10,6 +10,7 @@ def test_order_invalid_quantity():
     with raises(ValueError):
         Order(Side.BUY, quantity=-1, price=100)
 
+
 def test_order_invalid_side():
     with raises(TypeError):
         Order(
