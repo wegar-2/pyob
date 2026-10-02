@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-__all__ = ["Trade"]
-
 
 @dataclass
 class Trade:
