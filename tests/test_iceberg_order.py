@@ -29,7 +29,7 @@ def test_ib_order_negative_peak():
         )
 
 
-def test_ib_order_negative_peak():
+def test_ib_order_valid():
     ibo = IcebergOrder(Side.BUY, quantity=10, price=100, peak=5)
     assert isinstance(ibo, IcebergOrder)
 

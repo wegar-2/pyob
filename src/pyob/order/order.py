@@ -17,13 +17,13 @@ class Order:
     def __post_init__(self):
         self.order_id = next(Order._orders_counter)
 
+        if (t := type(self.quantity)) is not int:
+            raise TypeError(f"Invalid type of quantity parameter: {t}")
+
         if self.quantity <= 0:
             raise ValueError(f"Supplied invalid quantity: {self.quantity:_}")
 
-        if t := type(self.quantity) is not int:
-            raise TypeError(f"Invalid type of quantity parameter: {t}")
-
-        if t := type(self.price) is not int:
+        if (t := type(self.price)) is not int:
             raise TypeError(f"Invalid type of price parameter: {t}")
 
         if type(self.side) is not Side:

@@ -15,7 +15,7 @@ class LimitOrder(Order):
         return self.remaining
 
     def fill(self, quantity: int):
-        if t := type(quantity) is not int:
+        if (t := type(quantity)) is not int:
             raise TypeError(f"Invalid type of quantity to be filled: {t}")
         if quantity <= 0:
             raise ValueError(f"Invalid fill quantity: {quantity:_}")

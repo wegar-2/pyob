@@ -18,6 +18,9 @@ class IcebergOrder(LimitOrder):
         if self.peak is None:
             self.peak = self.quantity
 
+        if (t := type(self.peak)) is not int:
+            raise TypeError(f"Iceberg's peak is not an int, it's {t} instead")
+
         if self.peak <= 0:
             raise ValueError(f"Invalid peak of iceberg: {self.peak:_}")
 
@@ -31,8 +34,13 @@ class IcebergOrder(LimitOrder):
         return True
 
     def fill(self, quantity: int):
-        super(IcebergOrder, self).fill(quantity)
-        # not fully implemented yet
+
+        if (t := type(quantity)) is not int:
+            raise TypeError(f"Invalid type of quantity to be filled: {t}")
+
         if quantity > self.visible:
-            raise NotImplemented(f"Hasn't implemented replenishment yet!")
+            raise ValueError(f"Quantity to fill: {quantity:_} exceeds the "
+                             f"visible quantity {self.visible:_}")
+
+        super(IcebergOrder, self).fill(quantity)
         self.visible -= quantity
