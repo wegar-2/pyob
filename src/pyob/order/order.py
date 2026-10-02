@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from pyob.common.side import Side
 
 
-@dataclass
+@dataclass(slots=True)
 class Order:
     order_id: int = field(init=False, repr=True)
     side: Side

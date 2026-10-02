@@ -15,6 +15,13 @@ def test_order_invalid_side():
     with raises(TypeError):
         Order(
             "asdf", # noqa
-            quantity=-1,
+            quantity=1,
             price=100
         )
+
+
+def test_order_valid():
+    assert isinstance(
+        Order(Side.BUY, quantity=10, price=100),
+        Order
+    )
