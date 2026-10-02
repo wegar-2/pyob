@@ -1,4 +1,6 @@
 from dataclasses import dataclass, field
+from itertools import count
+from typing import ClassVar, Iterator
 
 from pyob.common.side import Side
 
@@ -10,18 +12,20 @@ class Order:
     quantity: int
     price: int
 
-    _orders_counter: int = 0
-
-    def _next_order_id(self) -> int:
-        self._orders_counter += 1
-        return self._orders_counter
+    _orders_counter: ClassVar[Iterator[int]] = count(1)
 
     def __post_init__(self):
-        self.order_id = self._next_order_id()
+        self.order_id = next(Order._orders_counter)
 
         if self.quantity <= 0:
             raise ValueError(f"Supplied invalid quantity: {self.quantity:_}")
 
-        if not isinstance(self.side, Side):
+        if t := type(self.quantity) is not int:
+            raise TypeError(f"Invalid type of quantity parameter: {t}")
+
+        if t := type(self.price) is not int:
+            raise TypeError(f"Invalid type of price parameter: {t}")
+
+        if type(self.side) is not Side:
             raise TypeError(f"Supplied invalid side - not instance of "
                             f"{Side.__name__}")

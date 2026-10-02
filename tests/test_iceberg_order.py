@@ -34,11 +34,6 @@ def test_ib_order_negative_peak():
     assert isinstance(ibo, IcebergOrder)
 
 
-def test_ib_order_negative_peak():
-    ibo = IcebergOrder(Side.BUY, quantity=10, price=100, peak=5)
-    assert isinstance(ibo, IcebergOrder)
-
-
 def test_ib_order_fill(ibo):
     ibo.fill(3)
     assert ibo.remaining == 7
