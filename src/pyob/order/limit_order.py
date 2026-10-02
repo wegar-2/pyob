@@ -10,7 +10,13 @@ class LimitOrder(Order):
         super(LimitOrder, self).__post_init__()
         self.remaining = self.quantity
 
+    @property
+    def displayed(self):
+        return self.remaining
+
     def fill(self, quantity: int):
+        if t := type(quantity) is not int:
+            raise TypeError(f"Invalid type of quantity to be filled: {t}")
         if quantity <= 0:
             raise ValueError(f"Invalid fill quantity: {quantity:_}")
         if quantity > self.remaining:

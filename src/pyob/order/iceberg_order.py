@@ -8,6 +8,10 @@ class IcebergOrder(LimitOrder):
     peak: int | None = None
     visible: int = field(init=False)
 
+    @property
+    def displayed(self):
+        return self.visible
+
     def __post_init__(self):
         super(IcebergOrder, self).__post_init__()
 
@@ -19,9 +23,12 @@ class IcebergOrder(LimitOrder):
 
         self.visible = min(self.peak, self.quantity)
 
-    def _replenish(self):
+    def replenish(self) -> bool:
         """Placeholder for handling cases when all visible gets exhausted"""
-        pass
+        if self.visible > 0 or self.remaining == 0:
+            return False
+        self.visible = min(self.peak, self.remaining)
+        return True
 
     def fill(self, quantity: int):
         super(IcebergOrder, self).fill(quantity)
