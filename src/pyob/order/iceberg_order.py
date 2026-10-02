@@ -26,4 +26,6 @@ class IcebergOrder(LimitOrder):
     def fill(self, quantity: int):
         super(IcebergOrder, self).fill(quantity)
         # not fully implemented yet
+        if quantity > self.visible:
+            raise NotImplemented(f"Hasn't implemented replenishment yet!")
         self.visible -= quantity
