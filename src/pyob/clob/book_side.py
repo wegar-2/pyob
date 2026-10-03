@@ -32,11 +32,7 @@ class BookSide:
     def best_level(self) -> PriceLevel | None:
         if not self._price_levels:
             return None
-        idx = (
-            self._price_levels[-1]
-            if self.side == Side.BUY
-            else self._price_levels[0]
-        )
+        idx = -1 if self.side == Side.BUY else 0
         return self._price_levels.peekitem(idx)[1]
 
     def best_price(self) -> int | None:
