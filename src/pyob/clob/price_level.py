@@ -6,7 +6,7 @@ from pyob.common.side import Side
 
 class PriceLevel:
 
-    def __init__(self, side: side, price: int):
+    def __init__(self, side: Side, price: int):
         self.side = side
         self.price = price
         self._orders: OrderedDict[int, LimitOrder] = OrderedDict()
