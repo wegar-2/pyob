@@ -1,7 +1,7 @@
 from sortedcontainers import SortedDict
 
 from pyob.common.side import Side
-from pyob.order import LimitOrder
+from pyob.order.limit_order import LimitOrder
 from pyob.clob.price_level import PriceLevel
 
 
@@ -25,17 +25,24 @@ class BookSide:
         if order.price in self._price_levels:
             self._price_levels[order.price].add(order)
         else:
-            self._price_levels[order.price] = order
+            new_price_level = PriceLevel(order.side, order.price)
+            new_price_level.add(order)
+            self._price_levels[order.price] = new_price_level
 
-    def best_level(self) -> PriceLevel:
-        return (
+    def best_level(self) -> PriceLevel | None:
+        if not self._price_levels:
+            return None
+        idx = (
             self._price_levels[-1]
             if self.side == Side.BUY
             else self._price_levels[0]
         )
+        return self._price_levels.peekitem(idx)[1]
 
-    def best_price(self) -> int:
-        return self.best_level().price
+    def best_price(self) -> int | None:
+        bl = self.best_level()
+        return None if bl is None else bl.price
 
-    def best_order(self) -> LimitOrder:
-        return self.best_level().first()
+    def best_order(self) -> LimitOrder | None:
+        bl = self.best_level()
+        return None if bl is None else bl.first()
